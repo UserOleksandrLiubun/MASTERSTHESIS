@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "ToDo": {
+    "GROUPCHOICE": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

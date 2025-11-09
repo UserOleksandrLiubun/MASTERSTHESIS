@@ -1,16 +1,12 @@
-﻿using GroupChoice.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace GroupChoice.Data
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public DbSet<DBTask> Tasks { get; set; }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
     {
-        public DbSet<Task> Tasks { get; set; }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-            Database.EnsureCreated();
-        }
+        Database.EnsureCreated();
     }
 }

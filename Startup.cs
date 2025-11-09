@@ -1,7 +1,4 @@
-﻿using GroupChoice.Data;
-using GroupChoice.Models;
-using GroupChoice.Services;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using GroupChoice;

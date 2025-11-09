@@ -1,7 +1,4 @@
-﻿namespace GroupChoice.Models.ManageViewModels
+﻿public class ShowRecoveryCodesViewModel
 {
-    public class ShowRecoveryCodesViewModel
-    {
-        public string[] RecoveryCodes { get; set; }
-    }
+    public string[] RecoveryCodes { get; set; }
 }

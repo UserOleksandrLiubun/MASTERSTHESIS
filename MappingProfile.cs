@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
-using GroupChoice.Models.TaskViewModels;
-namespace GroupChoice
+using static System.Runtime.InteropServices.JavaScript.JSType;
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<TaskViewModel, Data.Task>();
-            CreateMap<Data.Task, TaskViewModel>();
-        }
+        CreateMap<TaskViewModel, DBTask>();
+        CreateMap<DBTask, TaskViewModel>();
     }
 }
