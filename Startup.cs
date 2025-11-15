@@ -62,13 +62,13 @@ var app = builder.Build();
 app.Use(async (context, next) =>
 {
     // Заголовки для захисту від XSS
-    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-    context.Response.Headers.Add("X-Frame-Options", "DENY"); // Заборона вбудовування в iframe
-    context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
-    context.Response.Headers.Add("Referrer-Policy", "strict-origin-when-cross-origin");
+    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Append("X-Frame-Options", "DENY"); // Заборона вбудовування в iframe
+    context.Response.Headers.Append("X-XSS-Protection", "1; mode=block");
+    context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
 
     // Content Security Policy для захисту від XSS
-    context.Response.Headers.Add("Content-Security-Policy",
+    context.Response.Headers.Append("Content-Security-Policy",
         "default-src 'self'; " +
         "script-src 'self' 'unsafe-inline' https://trusted.cdn.com; " +
         "style-src 'self' 'unsafe-inline'; " +
@@ -87,7 +87,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseBrowserLink();
-    app.UseDatabaseErrorPage();
 }
 else
 {
