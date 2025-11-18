@@ -1,0 +1,77 @@
+﻿@model TaskAccessViewModel
+
+@{
+    ViewData["Title"] = $"Manage Access - {Model.TaskName}";
+}
+
+<div class="container">
+    <h2>Manage Access for Task: @Model.TaskName</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Grant Access to New User</h4>
+
+            @if (Model.AvailableContacts.Any())
+            {
+                <form asp-action="GrantAccess" method="post">
+                    <input type="hidden" name="taskId" value="@Model.TaskId" />
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label for="selectedUserId">Select User to Grant Access:</label>
+                        <select name="selectedUserId" class="form-control" required>
+                            <option value="">-- Select User --</option>
+                            @foreach (var contact in Model.AvailableContacts)
+                            {
+                                <option value="@contact.UserId">@contact.DisplayName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success mt-2">Grant Access</button>
+                </form>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    No available contacts to grant access. All your contacts already have access or you have no contacts.
+                </div>
+            }
+        </div>
+
+        <div class="col-md-6">
+            <h4>Current Users with Access</h4>
+
+            @if (Model.CurrentAccessUsers.Any())
+            {
+                <div class="list-group">
+                    @foreach (var user in Model.CurrentAccessUsers)
+                    {
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>@user.DisplayName</span>
+                            <form asp-action="RemoveAccess" method="post" style="display: inline;">
+                                <input type="hidden" name="taskId" value="@Model.TaskId" />
+                                <input type="hidden" name="userId" value="@user.UserId" />
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Are you sure you want to remove access for @user.DisplayName?')">
+                                    Remove
+                                </button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    No users currently have access to this task.
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="@Url.Action("Index", "Tasks")" class="btn btn-secondary">Back to Tasks</a>
+    </div>
+</div>

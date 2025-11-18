@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 public class DBTask
 {
     [Key]
@@ -8,4 +9,6 @@ public class DBTask
     public string Name { get; set; }
     public bool IsImportant { get; set; }
     public bool IsCompleted { get; set; }
+    public string UsersIDs { get; set; }
+    public string UserIDsGrantedAccess { get; set; }
 }

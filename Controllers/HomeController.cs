@@ -98,7 +98,10 @@ public class HomeController : Controller
             return View(model);
         }
         model.UserId = user.Id;
-        _context.Tasks.Add(_mapper.Map<DBTask>(model));
+        var dBTask = _mapper.Map<DBTask>(model);
+        dBTask.UserIDsGrantedAccess = user.Id;
+        dBTask.UsersIDs = user.Id;
+        _context.Tasks.Add(dBTask);
         await _context.SaveChangesAsync();
         return RedirectToLocal(returnUrl);
     }

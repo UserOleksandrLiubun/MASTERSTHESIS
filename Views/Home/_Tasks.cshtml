@@ -54,6 +54,7 @@
                 </td>
                 <td>
                     <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id" asp-route-returnurl="@Context.Request.Path">Edit</a>
+                    <a class="btn btn-primary btn-sm" asp-controller="TaskAccess" asp-controller="TaskAccess" asp-action="Index" asp-route-taskId="@item.Id">Task Access</a>
                     <button class="btn btn-danger btn-sm" onclick="deleteTask(@item.Id)" asp-route-id="@item.Id">Delete</button>
                 </td>
             </tr>
