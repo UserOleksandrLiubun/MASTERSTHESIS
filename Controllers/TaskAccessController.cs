@@ -107,7 +107,7 @@ public class TaskAccessController : Controller
                 model.CurrentAccessUsers.Add(new UserAccessInfo
                 {
                     UserId = userId,
-                    DisplayName = user?.UserName ?? user?.Email ?? userId
+                    DisplayName = $"{user?.FirstName} {user?.LastName} / {user?.UserName}"
                 });
             }
         }
@@ -127,7 +127,7 @@ public class TaskAccessController : Controller
                 model.AvailableContacts.Add(new UserAccessInfo
                 {
                     UserId = user.Id,
-                    DisplayName = user?.UserName ?? user?.Email ?? user.Id
+                    DisplayName = $"{user?.FirstName} {user?.LastName} / {user?.UserName}"
                 });
             }
         }
