@@ -31,6 +31,9 @@
             <th>
                 Creator
             </th>
+            <th>
+                User Name
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -57,11 +60,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.IsImportant)
                 </td>
+                @{
+                    var user = UserManager.FindByIdAsync(item.UserId).Result;
+                }
                 <td>
-                    @{
-                        var user = UserManager.FindByIdAsync(item.UserId).Result;
-                    }
                     @user.FirstName @user.LastName
+                </td>
+                <td>
+                    @user.UserName
                 </td>
                 <td>
                     <a class="btn btn-primary btn-sm mt-1 mb-1" asp-action="Edit" asp-route-id="@item.Id" asp-route-returnurl="@Context.Request.Path">Edit</a>
