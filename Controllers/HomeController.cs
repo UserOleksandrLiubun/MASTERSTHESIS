@@ -82,8 +82,9 @@ public class HomeController : Controller
     {
         var user = await _userManager.GetUserAsync(User);
         var task = _context.Tasks.First(item => item.UserId == user.Id && item.Id == model.Id);
+        model.UserId = task.UserId;
         _mapper.Map(model, task);
-        task.UserId = user.Id;
+        task.EditorId = user.Id;
         _context.Update(task);
         _context.SaveChanges();
         return RedirectToLocal(returnUrl);
@@ -101,6 +102,7 @@ public class HomeController : Controller
         var dBTask = _mapper.Map<DBTask>(model);
         dBTask.UserIDsGrantedAccess = user.Id;
         dBTask.UsersIDs = user.Id;
+        dBTask.EditorId = user.Id;
         _context.Tasks.Add(dBTask);
         await _context.SaveChangesAsync();
         return RedirectToLocal(returnUrl);

@@ -6,6 +6,7 @@ public class DBTask
     [Key]
     public int Id { get; set; }
     public string UserId { get; set; }
+    public string EditorId { get; set; }
     public DateTime? DueDate { get; set; } = null;
     public string Name { get; set; }
     [Column(TypeName = "nvarchar(MAX)")]
