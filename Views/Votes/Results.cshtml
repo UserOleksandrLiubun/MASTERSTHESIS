@@ -1,0 +1,49 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Results: " + ViewBag.VoteTitle;
+    var totalVotes = ViewBag.TotalVotes ?? 0;
+}
+
+<h2>Results: @ViewBag.VoteTitle</h2>
+
+@if (totalVotes == 0)
+{
+    <div class="alert alert-info">
+        <h4>No votes submitted yet</h4>
+        <p>There are no evaluations submitted for this vote. Please check back later.</p>
+    </div>
+}
+else
+{
+    <div class="alert alert-success mb-4">
+        Total number of voters: <strong>@totalVotes</strong>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Criterion</th>
+                <th>Avg Importance</th>
+                <th>Avg Value</th>
+                <th>Weighted Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Criteria.Title</td>
+                    <td>@item.AverageImportance.ToString("F2")</td>
+                    <td>@item.AverageValue.ToString("F2")</td>
+                    <td>@item.WeightedScore.ToString("F2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="mt-4">
+        <h4>Total Weighted Score: @Model.Sum(x => x.WeightedScore).ToString("F2")</h4>
+    </div>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

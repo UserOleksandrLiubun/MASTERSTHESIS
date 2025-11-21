@@ -1,0 +1,37 @@
+﻿@model IEnumerable<DBVote>
+@{
+    ViewData["Title"] = "My Votes";
+}
+
+<h2>My Votes</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Vote</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>@item.StartDateTime.ToString("g")</td>
+                <td>@item.EndDateTime.ToString("g")</td>
+                <td>
+                    <a asp-action="Evaluate" asp-route-id="@item.Id" class="btn btn-success">Evaluate</a>
+                    <a asp-action="Results" asp-route-id="@item.Id" class="btn btn-info">Results</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
