@@ -161,6 +161,16 @@ public class VotesController : Controller
                 _context.DBVoteItemSettings.Add(settings);
             }
 
+            foreach (var alternativesalt in model.Alternatives)
+            {
+                var settings = new DBVoteAlternative
+                {
+                    DBVoteId = vote.Id,
+                    Title = alternativesalt
+                };
+                _context.DBVoteAlternative.Add(settings);
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

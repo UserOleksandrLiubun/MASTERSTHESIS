@@ -59,6 +59,11 @@ public class DBVoteItemSettings
 
 public class DBVoteAlternative
 {
+    [Key]
+    public int Id { get; set; }
+
+    [Required]
+    public int DBVoteId { get; set; }
     public string Title;
 }
 
