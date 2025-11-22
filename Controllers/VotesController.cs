@@ -193,6 +193,14 @@ public class VotesController : Controller
             .Where(s => s.DBVoteId == id)
             .ToList();
 
+        for(int j = 0; j < alternative.Count; j++)
+        {
+            for (int i = 0; i < criteria.Count; i++)
+            {
+
+            }
+        }
+
         var model = new VoteEvaluationViewModel
         {
             VoteId = id,
@@ -207,6 +215,26 @@ public class VotesController : Controller
                 MaxValue = c.MaxValue
             }).ToList()
         };
+
+        if (alternative.Count > 0)
+        {
+            model.Criteria = new();
+            for (int j = 0; j < alternative.Count; j++)
+            {
+                for (int i = 0; i < criteria.Count; i++)
+                {
+                    model.Criteria.Add(new EvaluationCriteriaViewModel
+                    {
+                        DBVoteAlternativeId = alternative[j].Id,
+                        SettingsId = criteria[i].Id,
+                        Title = criteria[i].Title,
+                        Description = criteria[i].Description,
+                        MinValue = criteria[i].MinValue,
+                        MaxValue = criteria[i].MaxValue
+                    });
+                }
+            }
+        }
 
         return View(model);
     }
