@@ -87,7 +87,7 @@ public class VotesController : Controller
     public async Task<List<SelectListItem>> GetContacts()
     {
         var user = await _userManager.GetUserAsync(User);
-        var contacts = await _context.Contacts.Where(item => item.UserId == user.Id || item.ContactUserId == user.Id).ToListAsync();
+        var contacts = await _context.Contacts.Where(item => (item.UserId == user.Id || item.ContactUserId == user.Id) && item.IsAccepted == true).ToListAsync();
         List<ApplicationUser> users = new();
         foreach (var contact in contacts)
         {
