@@ -283,6 +283,25 @@ public class VotesController : Controller
         ViewBag.TotalVotes = votes.Select(v => v.UserId).Distinct().Count();
         return View(results);
     }
+
+    // POST: Contacts/Delete
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var currentUser = await _userManager.GetUserAsync(User);
+        if (currentUser == null) return Challenge();
+
+        var votes = await _context.DBVotes
+            .Where(c => c.UserId == currentUser.Id && c.Id == id)
+            .ToListAsync();
+
+        _context.DBVotes.RemoveRange(votes);
+        await _context.SaveChangesAsync();
+
+        TempData["Success"] = "Vote removed successfully!";
+        return RedirectToAction("Index");
+    }
 }
 
 public static class LinqExtensions
