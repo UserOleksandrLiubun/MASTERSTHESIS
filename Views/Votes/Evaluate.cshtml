@@ -1,6 +1,7 @@
 ﻿@model VoteEvaluationViewModel
 @{
     ViewData["Title"] = "Evaluate: " + Model.VoteTitle;
+    int alternativeId = -1;
 }
 
 <h2>Evaluate: @Model.VoteTitle</h2>
@@ -8,9 +9,12 @@
 <form asp-action="Evaluate">
     <input type="hidden" asp-for="VoteId" />
     <input type="hidden" asp-for="VoteTitle" />
-
     @for (int i = 0; i < Model.Criteria.Count; i++)
     {
+        var isNew = alternativeId != Model.Criteria[i].DBVoteAlternativeId && Model.Criteria[i].DBVoteAlternativeId != null;
+        alternativeId = isNew ? Model.Criteria[i].DBVoteAlternativeId : alternativeId;
+        var alternative = isNew ? Model.Alternatives.Where((item) => item.Id == Model.Criteria[i].DBVoteAlternativeId).First() : null;
+        <h1>@alternative?.Title</h1>
         <div class="criteria-item border p-3 mb-3">
             <input type="hidden" asp-for="Criteria[i].SettingsId" />
             <input type="hidden" asp-for="Criteria[i].MinValue" />
@@ -45,7 +49,6 @@
             </div>
         </div>
     }
-
     <div class="form-group">
         <input type="submit" value="Submit Evaluation" class="btn btn-primary" />
         <a asp-action="Index" class="btn btn-secondary">Cancel</a>

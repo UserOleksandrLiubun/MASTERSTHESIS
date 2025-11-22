@@ -64,7 +64,7 @@ public class DBVoteAlternative
 
     [Required]
     public int DBVoteId { get; set; }
-    public string Title;
+    public string Title { get; set; }
 }
 
 public class DBVoteItem
@@ -75,7 +75,7 @@ public class DBVoteItem
     [Required]
     public int DBVoteId { get; set; }
     
-    public int DBVoteAlternativeId { get; set; }
+    public int? DBVoteAlternativeId { get; set; }
 
     [Required]
     public int DBVoteItemSettingsId { get; set; }

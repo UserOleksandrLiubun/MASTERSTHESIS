@@ -163,12 +163,12 @@ public class VotesController : Controller
                 _context.DBVoteItemSettings.Add(settings);
             }
 
-            foreach (var alternativesalt in model.Alternatives)
+            foreach (var alternative in model.Alternatives)
             {
                 var settings = new DBVoteAlternative
                 {
                     DBVoteId = vote.Id,
-                    Title = alternativesalt
+                    Title = alternative
                 };
                 _context.DBVoteAlternative.Add(settings);
             }
