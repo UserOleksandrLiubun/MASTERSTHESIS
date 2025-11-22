@@ -4,7 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-
+public class UserSearchViewModel
+{
+    public string SearchTerm { get; set; }
+    public List<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
+}
 [Authorize]
 public class ContactsController : Controller
 {
@@ -16,7 +20,28 @@ public class ContactsController : Controller
         _userManager = userManager;
         _context = context;
     }
+    public async Task<IActionResult> Search(UserSearchViewModel model)
+    {
+        var users = _userManager.Users.AsQueryable();
 
+        if (!string.IsNullOrEmpty(model.SearchTerm))
+        {
+            var searchTerm = model.SearchTerm.Trim().ToLower();
+
+            users = users.Where(u =>
+                u.FirstName.ToLower().Contains(searchTerm) ||
+                u.LastName.ToLower().Contains(searchTerm) ||
+                u.UserName.ToLower().Contains(searchTerm) ||
+                u.Email.ToLower().Contains(searchTerm)
+            );
+        }
+
+        model.Users = await users.OrderBy(u => u.LastName)
+                                .ThenBy(u => u.FirstName)
+                                .ToListAsync();
+
+        return View(model);
+    }
     // GET: Contacts/Add
     public IActionResult Add()
     {
