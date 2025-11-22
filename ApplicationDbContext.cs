@@ -46,12 +46,15 @@ public class DBVoteItemSettings
 
     public string Description { get; set; }
 
-    [Display(Name = "Max Importance")]
+    [Display(Name = "Importance")]
     [Range(1, 100)]
-    public double MaxImportanceValue { get; set; } = 100;
+    public double ImportanceValue { get; set; } = 100;
 
     [Display(Name = "Min Value")]
     public double MinValue { get; set; } = 0;
+
+    [Display(Name = "Step Value")]
+    public double StepValue { get; set; } = 0;
 
     [Display(Name = "Max Value")]
     public double MaxValue { get; set; } = 10;

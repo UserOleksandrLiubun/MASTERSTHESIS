@@ -82,25 +82,32 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label asp-for="Criteria[i].MaxImportance" class="control-label"></label>
-                            <input asp-for="Criteria[i].MaxImportance" class="form-control" />
-                            <span asp-validation-for="Criteria[i].MaxImportance" class="text-danger"></span>
+                            <label asp-for="Criteria[i].Importance" class="control-label"></label>
+                            <input asp-for="Criteria[i].Importance" class="form-control" />
+                            <span asp-validation-for="Criteria[i].Importance" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label asp-for="Criteria[i].MinValue" class="control-label"></label>
                             <input asp-for="Criteria[i].MinValue" class="form-control" />
                             <span asp-validation-for="Criteria[i].MinValue" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label asp-for="Criteria[i].MaxValue" class="control-label"></label>
                             <input asp-for="Criteria[i].MaxValue" class="form-control" />
                             <span asp-validation-for="Criteria[i].MaxValue" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label asp-for="Criteria[i].StepValue" class="control-label"></label>
+                            <input asp-for="Criteria[i].StepValue" class="form-control" />
+                            <span asp-validation-for="Criteria[i].StepValue" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -134,8 +141,8 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="control-label">Max Importance</label>
-                                <input name="Criteria[${index}].MaxImportance" class="form-control" value="100" />
+                                <label class="control-label">Importance</label>
+                                <input name="Criteria[${index}].Importance" class="form-control" value="100" />
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -196,8 +203,8 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="control-label">Max Importance</label>
-                                <input name="Criteria[${index}].MaxImportance" class="form-control" value="100" />
+                                <label class="control-label">Importance</label>
+                                <input name="Criteria[${index}].Importance" class="form-control" value="100" />
                             </div>
                         </div>
                         <div class="col-md-4">

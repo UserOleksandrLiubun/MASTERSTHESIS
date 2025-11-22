@@ -35,10 +35,10 @@ public class VoteCriteriaViewModel
     public string Description { get; set; }
 
     [Range(1, 100)]
-    public double MaxImportance { get; set; } = 100;
+    public double Importance { get; set; } = 100;
 
     public double MinValue { get; set; } = 0;
-
+    public double StepValue { get; set; } = 0;
     public double MaxValue { get; set; } = 10;
 }
 
@@ -157,7 +157,8 @@ public class VotesController : Controller
                     DBVoteId = vote.Id,
                     Title = criteria.Title,
                     Description = criteria.Description,
-                    MaxImportanceValue = criteria.MaxImportance,
+                    ImportanceValue = criteria.Importance,
+                    StepValue = criteria.StepValue,
                     MinValue = criteria.MinValue,
                     MaxValue = criteria.MaxValue
                 };
