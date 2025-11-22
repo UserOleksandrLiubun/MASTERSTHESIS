@@ -260,14 +260,9 @@ public class VotesController : Controller
             }
 
             // Check if user already voted
-            var existingVote = _context.DBVoteItems
-                .FirstOrDefault(v => v.DBVoteId == model.VoteId && v.UserId == userId);
-
-            if (existingVote != null)
-            {
-                ModelState.AddModelError("", "You have already voted for this evaluation.");
-                return View(model);
-            }
+            var existingVotes = _context.DBVoteItems
+                .Where(v => v.DBVoteId == model.VoteId && v.UserId == userId);
+            _context.DBVoteItems.RemoveRange(existingVotes);
 
             foreach (var criteria in model.Criteria)
             {
