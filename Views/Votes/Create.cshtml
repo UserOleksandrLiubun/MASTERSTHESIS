@@ -42,8 +42,7 @@
         <select asp-for="UsersIDs" class="form-control" multiple="multiple" size="5">
             @foreach (var contact in Model.Contacts)
             {
-                var user = UserManager.FindByIdAsync(contact.UserId).Result;
-                <option value="@contact.UserId">@user.FirstName @user.LastName (@user.UserName)</option>
+                <option value="@contact.Id">@contact.FirstName @contact.LastName (@contact.UserName)</option>
             }
         </select>
         <span asp-validation-for="UsersIDs" class="text-danger"></span>

@@ -22,7 +22,7 @@ public class CreateVoteViewModel
     public string UsersIDs { get; set; }
     public List<string> Alternatives { get; set; } = new();
     public List<VoteCriteriaViewModel> Criteria { get; set; } = new();
-    public List<Contact> Contacts { get; set; } = new();
+    public List<ApplicationUser> Contacts { get; set; } = new();
 }
 
 public class VoteCriteriaViewModel
@@ -87,13 +87,27 @@ public class VotesController : Controller
     {
         var user = await _userManager.GetUserAsync(User);
         var contacts = await _context.Contacts.Where(item => item.UserId == user.Id || item.ContactUserId == user.Id).ToListAsync();
+        List<ApplicationUser> users = new();
+        foreach(var contact in contacts) 
+        {
+            if (contact.UserId == contact.UserId) 
+            {
+                users.Add(await _userManager.FindByEmailAsync(contact.UserId));
+            }
+            else if (contact.ContactUserId == contact.UserId)
+            {
+                users.Add(await _userManager.FindByEmailAsync(contact.ContactUserId));
+            }
+        }
         var model = new CreateVoteViewModel
         {
+            
+            Alternatives = new(),
             Criteria = new List<VoteCriteriaViewModel>
             {
                 new VoteCriteriaViewModel()
             },
-            Contacts = _context.Contacts.Where((item) => item.UserId.Contains(user.Id) || item.ContactUserId.Contains(user.Id)).ToList()
+            Contacts = users
         };
         return View(model);
     }
