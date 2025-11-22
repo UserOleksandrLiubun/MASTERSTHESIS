@@ -11,7 +11,7 @@
     <input type="hidden" asp-for="VoteTitle" />
     @for (int i = 0; i < Model.Criteria.Count; i++)
     {
-        var isNew = alternativeId != Model.Criteria[i].DBVoteAlternativeId && Model.Criteria[i].DBVoteAlternativeId != null;
+        var isNew = Model.Alternatives.Count() > 0 && alternativeId != Model.Criteria[i].DBVoteAlternativeId && Model.Criteria[i].DBVoteAlternativeId != null;
         alternativeId = isNew ? Model.Criteria[i].DBVoteAlternativeId : alternativeId;
         var alternative = isNew ? Model.Alternatives.Where((item) => item.Id == Model.Criteria[i].DBVoteAlternativeId).First() : null;
         <h1>@alternative?.Title</h1>
