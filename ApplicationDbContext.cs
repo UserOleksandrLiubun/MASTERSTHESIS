@@ -57,6 +57,11 @@ public class DBVoteItemSettings
     public double MaxValue { get; set; } = 10;
 }
 
+public class DBVoteAlternative
+{
+    public string Title;
+}
+
 public class DBVoteItem
 {
     [Key]
@@ -85,6 +90,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<DBVote> DBVotes { get; set; }
     public DbSet<DBVoteItemSettings> DBVoteItemSettings { get; set; }
     public DbSet<DBVoteItem> DBVoteItems { get; set; }
+    public DbSet<DBVoteAlternative> DBVoteAlternative { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
