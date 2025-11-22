@@ -193,14 +193,6 @@ public class VotesController : Controller
             .Where(s => s.DBVoteId == id)
             .ToList();
 
-        for(int j = 0; j < alternative.Count; j++)
-        {
-            for (int i = 0; i < criteria.Count; i++)
-            {
-
-            }
-        }
-
         var model = new VoteEvaluationViewModel
         {
             VoteId = id,
@@ -281,6 +273,7 @@ public class VotesController : Controller
             {
                 var voteItem = new DBVoteItem
                 {
+                    DBVoteAlternativeId = criteria.DBVoteAlternativeId,
                     DBVoteId = model.VoteId,
                     DBVoteItemSettingsId = criteria.SettingsId,
                     ImportanceValue = criteria.ImportanceValue,
