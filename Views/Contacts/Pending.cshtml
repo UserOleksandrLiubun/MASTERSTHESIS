@@ -14,13 +14,13 @@ else
     @foreach (var request in Model)
     {
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <span>@request.UserName</span>
+            <span>@request.FirstName @request.LastName (@request.UserName)</span>
             <div class="btn-group">
-                <form asp-action="Delete" method="post">
+                <form asp-action="Delete" method="post" class="p-1">
                     <input type="hidden" name="userName" value="@request.UserName" />
                     <button type="submit" class="btn btn-danger btn-sm" asp-action="Delete">Delete</button>
                 </form>
-                <form asp-action="Accept" method="post">
+                <form asp-action="Accept" method="post" class="p-1">
                     <input type="hidden" name="userName" value="@request.UserName" />
                     <button type="submit" class="btn btn-success btn-sm">Accept</button>
                 </form>

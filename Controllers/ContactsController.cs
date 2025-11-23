@@ -194,6 +194,8 @@ public class ContactsController : Controller
             {
                 pendingViewModels.Add(new PendingContactViewModel
                 {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     UserName = user.UserName,
                     RequestId = request.Id
                 });
@@ -256,5 +258,7 @@ public class ContactViewModel
 public class PendingContactViewModel
 {
     public string UserName { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
     public int RequestId { get; set; }
 }
