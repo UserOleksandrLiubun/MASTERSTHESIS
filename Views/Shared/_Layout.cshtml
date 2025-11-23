@@ -23,31 +23,31 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Important">Important Tasks</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Головна</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Planned">Planned Tasks</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Important">Важливі завдання</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Completed">Completed Tasks</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Planned">Заплановані завдання</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Votes" asp-action="Index">Votes</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Completed">Виконані завдання</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Contacts" asp-action="Index">Contacts</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Votes" asp-action="Index">Голосування</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Contacts" asp-action="Search">Searhc Contacts</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Contacts" asp-action="Index">Контакти</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Manage" asp-action="ChangePassword">Change Password</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Contacts" asp-action="Search">Пошук контактів</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Manage" asp-action="ChangePassword">Змінити пароль</a>
                             </li>
                         }
                     </ul>

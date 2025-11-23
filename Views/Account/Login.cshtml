@@ -38,11 +38,11 @@
                     <button type="submit" class="w-100 btn btn-lg btn-primary">Увійти</button>
                 </div>
                 <div class="form-group mb-3">
-                    <p>
+                    @*<p>
                         <a asp-action="ForgotPassword">Forgot your password?</a>
-                    </p>
+                    </p> *@
                     <p>
-                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
+                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Зареєструватися</a>
                     </p>
                 </div>
             </form>

@@ -1,4 +1,4 @@
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<DBApplicationUser> SignInManager
 @inject UserManager<DBApplicationUser> UserManager
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -21,7 +21,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">???????????????</a></li>
-        <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">??????</a></li>
+        <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Зареєструватися</a></li>
+        <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Увійти</a></li>
     </ul>
 }

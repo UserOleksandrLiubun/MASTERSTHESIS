@@ -70,7 +70,7 @@ public class AccountController : Controller
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                ModelState.AddModelError(string.Empty, "Невдала спроба входу.");
                 return View(model);
             }
         }
