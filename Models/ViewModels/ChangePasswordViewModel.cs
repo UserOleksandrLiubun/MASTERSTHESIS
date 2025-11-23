@@ -4,18 +4,18 @@ public class ChangePasswordViewModel
 {
     [Required]
     [DataType(DataType.Password)]
-    [Display(Name = "Current password")]
+    [Display(Name = "Поточний пароль")]
     public string OldPassword { get; set; }
 
     [Required]
-    [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+    [StringLength(100, ErrorMessage = "{0} має містити щонайменше {2} та щонайбільше {1} символів.", MinimumLength = 6)]
     [DataType(DataType.Password)]
-    [Display(Name = "New password")]
+    [Display(Name = "Новий пароль")]
     public string NewPassword { get; set; }
 
     [DataType(DataType.Password)]
-    [Display(Name = "Confirm new password")]
-    [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+    [Display(Name = "Підтвердіть новий пароль")]
+    [Compare("NewPassword", ErrorMessage = "Новий пароль та пароль підтвердження не збігаються.")]
     public string ConfirmPassword { get; set; }
 
     public string? StatusMessage { get; set; }

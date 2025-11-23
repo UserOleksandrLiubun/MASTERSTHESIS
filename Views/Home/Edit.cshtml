@@ -1,16 +1,16 @@
 ﻿@inject UserManager<DBApplicationUser> UserManager
 @model TaskViewModel
 @{
-    ViewData["Title"] = "Edit Task";
+    ViewData["Title"] = "Редагувати завдання";
     var user = UserManager.FindByIdAsync(Model.UserId).Result;
     var editor = UserManager.FindByIdAsync(Model.EditorId).Result;
 }
 <h2>@ViewData["Title"]</h2>
-<b>Creator:</b> @user.FirstName @user.LastName (@user.UserName)
+<b>Творець:</b> @user.FirstName @user.LastName (@user.UserName)
 @if (Model.UserId != Model.EditorId)
 {
     <br/>
-    <b>Last Editor:</b> @(editor.FirstName + " " + editor.LastName + " (" +editor.UserName + ")")
+    <b>Останній редактор:</b> @(editor.FirstName + " " + editor.LastName + " (" +editor.UserName + ")")
 }
 <div class="row">
     <div class="col-md-4">
@@ -54,7 +54,7 @@
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-3">
-                    <button type="submit" class="w-100 btn btn-lg btn-primary">Edit</button>
+                    <button type="submit" class="w-100 btn btn-lg btn-primary">Редагувати</button>
                 </div>
             </form>
         </section>

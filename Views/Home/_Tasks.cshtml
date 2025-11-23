@@ -29,10 +29,10 @@
                 @Html.DisplayNameFor(model => model.IsImportant)
             </th>
             <th>
-                Creator Name
+                Ім'я творця
             </th>
             <th>
-                Creator User Name
+                Ім'я користувача
             </th>
             <th></th>
         </tr>
@@ -70,9 +70,9 @@
                     @user.UserName
                 </td>
                 <td>
-                    <a class="btn btn-primary btn-sm mt-1 mb-1" asp-action="Edit" asp-route-id="@item.Id" asp-route-returnurl="@Context.Request.Path">Edit</a>
-                    <a class="btn btn-primary btn-sm mt-1 mb-1" asp-controller="TaskAccess" asp-controller="TaskAccess" asp-action="Index" asp-route-taskId="@item.Id">Task Access</a>
-                    <button class="btn btn-danger btn-sm mt-1 mb-1" onclick="deleteTask(@item.Id)" asp-route-id="@item.Id">Delete</button>
+                    <a class="btn btn-primary btn-sm mt-1 mb-1" asp-action="Edit" asp-route-id="@item.Id" asp-route-returnurl="@Context.Request.Path">Редагувати</a>
+                    <a class="btn btn-primary btn-sm mt-1 mb-1" asp-controller="TaskAccess" asp-controller="TaskAccess" asp-action="Index" asp-route-taskId="@item.Id">Доступ до завдання</a>
+                    <button class="btn btn-danger btn-sm mt-1 mb-1" onclick="deleteTask(@item.Id)" asp-route-id="@item.Id">Видалити</button>
                 </td>
             </tr>
         }

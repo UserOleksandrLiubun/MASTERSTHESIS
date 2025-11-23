@@ -1,7 +1,7 @@
 ﻿@using CHOICE.Models.DTOs
 @model IEnumerable<DBVote>
 @{
-    ViewData["Title"] = "My Votes";
+    ViewData["Title"] = "Голосування";
     var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 }
 
@@ -15,10 +15,10 @@
     <div class="alert alert-danger">@TempData["Error"]</div>
 }
 
-<h2>My Votes</h2>
+<h2>@ViewData["Title"]</h2>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New Vote</a>
+    <a asp-action="Create" class="btn btn-primary">Створити</a>
 </p>
 
 <table class="table">
