@@ -178,22 +178,29 @@
                         <textarea name="Criteria[${index}].Description" class="form-control"></textarea>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="control-label">Importance</label>
                                 <input name="Criteria[${index}].Importance" class="form-control" value="100" />
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="control-label">Min Value</label>
                                 <input name="Criteria[${index}].MinValue" class="form-control" value="0" />
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="control-label">Max Value</label>
                                 <input name="Criteria[${index}].MaxValue" class="form-control" value="10" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Criteria[i].StepValue" class="control-label">Step Value</label>
+                                <input asp-for="Criteria[i].StepValue" class="form-control" />
+                                <span asp-validation-for="Criteria[i].StepValue" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
