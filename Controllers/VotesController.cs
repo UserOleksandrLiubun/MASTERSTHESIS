@@ -24,11 +24,8 @@ public class CreateVoteViewModel
     [Display(Name = "Дата завершення")]
     public DateTime EndDateTime { get; set; } = DateTime.Now.AddDays(7);
 
-    [Required]
     [Display(Name = "Учасники")]
     public List<string> UsersIDs { get; set; }
-    [Required]
-    [Display(Name = "Учасники")]
     public List<string> Alternatives { get; set; } = new();
     public List<VoteCriteriaViewModel> Criteria { get; set; } = new();
     public List<SelectListItem> Contacts { get; set; } = new();
@@ -87,6 +84,7 @@ public class VoteResultViewModel
     public string Title { get; set; }
     public bool IsPrivate { get; set; }
     public DBVote DBVote { get; set; }
+    public List<string> UserIDs  { get; set; }
     public List<DBVoteItemSettings> DBVoteItemSettings { get; set; }
     public List<DBVoteItem> DBVoteItem { get; set; }
     public List<DBVoteAlternative> DBVoteAlternative { get; set; }
@@ -145,7 +143,9 @@ public class VotesController : Controller
         var user = await _userManager.GetUserAsync(User);
         var model = new CreateVoteViewModel
         {
-            Alternatives = new(),
+            Alternatives = new() {
+                 ""
+            },
             Criteria = new List<VoteCriteriaViewModel>
             {
                 new VoteCriteriaViewModel()
@@ -354,7 +354,8 @@ public class VotesController : Controller
             DBVote = vote,
             DBVoteItemSettings = dBVoteItemSettings,
             DBVoteItem = votes,
-            DBVoteAlternative = alternatives
+            DBVoteAlternative = alternatives,
+            UserIDs = vote.UsersIDs.Split(",").ToList()
         };
 
         return View(result);

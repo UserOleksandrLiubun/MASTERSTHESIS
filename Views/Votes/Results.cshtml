@@ -263,7 +263,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var id in Model.DBVote.UserId.Split(","))
+                                        
+                                        @foreach (var id in Model.UserIDs)
                                         {
                                             var u = UserManager.FindByIdAsync(id).Result;
                                             <tr>

@@ -21,7 +21,7 @@
         var isNew = Model.Alternatives.Count() > 0 && alternativeId != Model.Criteria[i].DBVoteAlternativeId && Model.Criteria[i].DBVoteAlternativeId != null;
         alternativeId = isNew ? Model.Criteria[i].DBVoteAlternativeId : alternativeId;
         var alternative = isNew ? Model.Alternatives.Where((item) => item.Id == Model.Criteria[i].DBVoteAlternativeId).First() : null;
-        <h3>@alternative?.Title</h3>
+        <h3>Альтернатива: @alternative?.Title</h3>
         <div class="criteria-item border p-3 mb-3">
             <input type="hidden" asp-for="Criteria[i].SettingsId" />
             <input type="hidden" asp-for="Criteria[i].MinValue" />
