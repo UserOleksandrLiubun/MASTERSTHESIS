@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CHOICE.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -93,7 +94,7 @@ public class ContactsController : Controller
             return View();
         }
 
-        var contact = new Contact
+        var contact = new DBContact
         {
             UserId = currentUser.Id,
             ContactUserId = contactUser.Id,
