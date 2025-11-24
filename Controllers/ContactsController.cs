@@ -62,7 +62,7 @@ public class ContactsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add(string userName)
     {
-        return await AddCONTACT(userName, "Index");
+        return await AddCONTACT(userName, "Pending");
     }
 
     public async Task<IActionResult> AddCONTACT(string userName, string redirecntTo)
@@ -174,7 +174,6 @@ public class ContactsController : Controller
         return RedirectToAction("Index");
     }
 
-    // GET: Contacts/Pending
     public async Task<IActionResult> Pending()
     {
         var currentUser = await _userManager.GetUserAsync(User);
