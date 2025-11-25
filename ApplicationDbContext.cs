@@ -1,7 +1,5 @@
-﻿using CHOICE.Models.DTOs;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 public class ApplicationDbContext : IdentityDbContext<DBApplicationUser>
 {
     public DbSet<DBTask> Tasks { get; set; }

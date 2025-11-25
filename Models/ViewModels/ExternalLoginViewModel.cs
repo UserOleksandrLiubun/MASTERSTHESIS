@@ -1,4 +1,3 @@
-using CHOICE;
 using System.ComponentModel.DataAnnotations;
 
 public class ExternalLoginViewModel

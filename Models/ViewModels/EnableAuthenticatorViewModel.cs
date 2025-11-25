@@ -1,5 +1,4 @@
-﻿using CHOICE;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 
 public class EnableAuthenticatorViewModel

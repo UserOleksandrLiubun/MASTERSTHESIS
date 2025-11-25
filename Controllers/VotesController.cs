@@ -1,11 +1,8 @@
-﻿using CHOICE;
-using CHOICE.Models.DTOs;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 public class CreateVoteViewModel
@@ -86,7 +83,7 @@ public class VoteResultViewModel
     public string Title { get; set; }
     public bool IsPrivate { get; set; }
     public DBVote DBVote { get; set; }
-    public List<string> UserIDs  { get; set; }
+    public List<string> UserIDs { get; set; }
     public List<DBVoteItemSettings> DBVoteItemSettings { get; set; }
     public List<DBVoteItem> DBVoteItem { get; set; }
     public List<DBVoteAlternative> DBVoteAlternative { get; set; }
@@ -128,7 +125,7 @@ public class VotesController : Controller
             }
         }
         users.Add(user);
-        List <SelectListItem> selects = new();
+        List<SelectListItem> selects = new();
         foreach (var contactUser in users)
         {
             selects.Add(new SelectListItem
@@ -163,10 +160,10 @@ public class VotesController : Controller
         model.Contacts = await GetContacts();
         double totalImportance = model.Criteria.Sum(c => c.Importance);
         ViewBag.WeightError = null;
-        if (totalImportance != 100 && totalImportance != model.Criteria.Count() * 100) 
+        if (totalImportance != 100 && totalImportance != model.Criteria.Count() * 100)
         {
             ViewBag.WeightError = "Призначте значення важливості критерію таким чином, щоб сума всіх критеріїв дорівнювала 100 або важливість кожного критерію дорівнювала 100.";
-            return View(model); 
+            return View(model);
         }
         if (ModelState.IsValid)
         {

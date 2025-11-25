@@ -1,5 +1,4 @@
-﻿@using CHOICE.Models.DTOs
-@model IEnumerable<DBVote>
+﻿@model IEnumerable<DBVote>
 @{
     ViewData["Title"] = "Голосування";
     var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;

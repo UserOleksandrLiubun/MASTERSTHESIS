@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using CHOICE;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,7 +59,8 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 builder.Services.AddMvc()
-    .AddDataAnnotationsLocalization(options => {
+    .AddDataAnnotationsLocalization(options =>
+    {
         options.DataAnnotationLocalizerProvider = (type, factory) =>
             factory.Create(typeof(SharedResource));
     });

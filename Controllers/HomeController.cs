@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.IO;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 [Authorize]
 public class HomeController : Controller
