@@ -62,12 +62,46 @@
                     <h5>@Model.Criteria[i].Title</h5>
                     <div class="form-group">
                         <label asp-for="Criteria[i].Value" class="control-label"></label>
-                        <input type="number" asp-for="Criteria[i].Value" class="form-control"
-                               min="@Model.Criteria[i].MinValue" max="@Model.Criteria[i].MaxValue" step="@Model.Criteria[i].StepValue" />
+                        <input type="number" asp-for="Criteria[i].Value" class="form-control criteria-value-input"
+                               min="@Model.Criteria[i].MinValue" max="@Model.Criteria[i].MaxValue" step="@Model.Criteria[i].StepValue"
+                               data-criteria-index="@i" />
                         <small class="form-text text-muted">
                             Значення повинно міститьсь в діапазоні від @Model.Criteria[i].MinValue до @Model.Criteria[i].MaxValue. @Model.Criteria[i].Description
                         </small>
                         <span asp-validation-for="Criteria[i].Value" class="text-danger"></span>
+
+                        <!-- Value control buttons -->
+                        <div class="criteria-controls mt-2">
+                            <div class="btn-group btn-group-sm mb-2" role="group">
+                                <button type="button" class="btn btn-outline-secondary criteria-decrement" data-index="@i">-</button>
+                                <button type="button" class="btn btn-outline-secondary criteria-increment" data-index="@i">+</button>
+                            </div>
+
+                            <div class="btn-group btn-group-sm mb-2" role="group">
+                                <button type="button" class="btn btn-outline-primary set-min-value" data-index="@i">Min (@Model.Criteria[i].MinValue)</button>
+                                <button type="button" class="btn btn-outline-primary set-max-value" data-index="@i">Max (@Model.Criteria[i].MaxValue)</button>
+                            </div>
+
+                            <div class="quick-values mt-2">
+                                @{
+                                    var stepValue = Model.Criteria[i].StepValue;
+                                    var maxValue = Model.Criteria[i].MaxValue;
+                                    var buttonCount = (int)Math.Ceiling(maxValue / stepValue) + 1;
+
+                                    for (int j = 0; j <= buttonCount; j++)
+                                    {
+                                        var value = j * stepValue;
+                                        if (value <= maxValue)
+                                        {
+                                            <button type="button" class="btn btn-outline-info btn-sm quick-value-btn mr-1 mb-1"
+                                                    data-index="@i" data-value="@value">
+                                                @value
+                                            </button>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -156,8 +190,75 @@
                 });
             }
 
+            // Criteria value controls
+            function initializeCriteriaControls() {
+                // Increment button
+                document.querySelectorAll('.criteria-increment').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = this.getAttribute('data-index');
+                        const input = document.querySelector(`input[data-criteria-index="${index}"]`);
+                        const step = parseFloat(input.getAttribute('step')) || 1;
+                        const max = parseFloat(input.getAttribute('max'));
+                        let currentValue = parseFloat(input.value) || 0;
+
+                        const newValue = Math.min(currentValue + step, max);
+                        input.value = newValue;
+                        input.dispatchEvent(new Event('change'));
+                    });
+                });
+
+                // Decrement button
+                document.querySelectorAll('.criteria-decrement').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = this.getAttribute('data-index');
+                        const input = document.querySelector(`input[data-criteria-index="${index}"]`);
+                        const step = parseFloat(input.getAttribute('step')) || 1;
+                        const min = parseFloat(input.getAttribute('min'));
+                        let currentValue = parseFloat(input.value) || 0;
+
+                        const newValue = Math.max(currentValue - step, min);
+                        input.value = newValue;
+                        input.dispatchEvent(new Event('change'));
+                    });
+                });
+
+                // Set min value
+                document.querySelectorAll('.set-min-value').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = this.getAttribute('data-index');
+                        const input = document.querySelector(`input[data-criteria-index="${index}"]`);
+                        const min = parseFloat(input.getAttribute('min'));
+                        input.value = min;
+                        input.dispatchEvent(new Event('change'));
+                    });
+                });
+
+                // Set max value
+                document.querySelectorAll('.set-max-value').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = this.getAttribute('data-index');
+                        const input = document.querySelector(`input[data-criteria-index="${index}"]`);
+                        const max = parseFloat(input.getAttribute('max'));
+                        input.value = max;
+                        input.dispatchEvent(new Event('change'));
+                    });
+                });
+
+                // Quick value buttons
+                document.querySelectorAll('.quick-value-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = this.getAttribute('data-index');
+                        const value = parseFloat(this.getAttribute('data-value'));
+                        const input = document.querySelector(`input[data-criteria-index="${index}"]`);
+                        input.value = value;
+                        input.dispatchEvent(new Event('change'));
+                    });
+                });
+            }
+
             // Initialize when page loads
             initializeDragAndDrop();
+            initializeCriteriaControls();
         });
     </script>
 
@@ -183,6 +284,21 @@
 
         .draggable:active .handle {
             cursor: grabbing;
+        }
+
+        .criteria-controls {
+            border-top: 1px solid #dee2e6;
+            padding-top: 10px;
+        }
+
+        .quick-values {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .quick-value-btn {
+            min-width: 40px;
         }
     </style>
 }
