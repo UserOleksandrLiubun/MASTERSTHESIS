@@ -11,339 +11,43 @@
         <p class="lead">@Model.Description</p>
     </div>
 }
-
-<style>
-    .criteria-list {
-        min-height: 100px;
-    }
-
-    .alternative-section {
-        transition: all 0.3s ease;
-        user-select: none;
-        margin-bottom: 2rem;
-        border: 2px solid transparent;
-        border-radius: 8px;
-        padding: 0;
-    }
-
-        .alternative-section.dragging {
-            opacity: 0.5;
-            transform: scale(0.98);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
-
-        .alternative-section.drag-over {
-            border: 2px dashed #007bff;
-            background-color: #f8f9fa;
-        }
-
-    .alternative-header {
-        background-color: #e9ecef;
-        padding: 1rem;
-        border-radius: 6px 6px 0 0;
-        margin-bottom: 0;
-        cursor: move; /* Only the header is draggable */
-    }
-
-    .alternative-criteria-container {
-        cursor: default; /* Criteria container is not draggable */
-    }
-
-    .criteria-item {
-        transition: all 0.3s ease;
-    }
-
-        .criteria-item.dragging {
-            opacity: 0.7;
-            background-color: #f8f9fa;
-        }
-
-    .drag-handle {
-        cursor: move;
-        margin-right: 10px;
-        color: #6c757d;
-    }
-
-    .alternative-drag-handle {
-        cursor: move;
-        margin-right: 10px;
-        font-size: 1.2em;
-    }
-
-    .alternative-header.dragging {
-        background-color: #d1ecf1;
-    }
-</style>
-
-<form asp-action="Evaluate" id="evaluationForm">
+<form asp-action="Evaluate">
     <input type="hidden" asp-for="VoteId" />
     <input type="hidden" asp-for="Description" />
     <input type="hidden" asp-for="IsPrivate" />
     <input type="hidden" asp-for="VoteTitle" />
-
-    <div class="criteria-list" id="criteriaContainer">
-        @{
-            var alternativeGroups = Model.Criteria
-            .GroupBy(c => c.DBVoteAlternativeId)
-            .Select(g => new
-            {
-                AlternativeId = g.Key,
-                Alternative = Model.Alternatives.FirstOrDefault(a => a.Id == g.Key),
-                Criteria = g.ToList()
-            })
-            .ToList();
-        }
-
-        @for (int groupIndex = 0; groupIndex < alternativeGroups.Count; groupIndex++)
-        {
-            var group = alternativeGroups[groupIndex];
-            var alternative = group.Alternative;
-
-            <div class="alternative-section" data-alternative-id="@group.AlternativeId" data-alternative-index="@groupIndex">
-                <div class="alternative-header d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center">
-                        <span class="alternative-drag-handle">↕</span>
-                        <h3 class="mb-0">Альтернатива: @alternative?.Title</h3>
+    @for (int i = 0; i < Model.Criteria.Count; i++)
+    {
+        var isNew = Model.Alternatives.Count() > 0 && alternativeId != Model.Criteria[i].DBVoteAlternativeId && Model.Criteria[i].DBVoteAlternativeId != null;
+        alternativeId = isNew ? Model.Criteria[i].DBVoteAlternativeId : alternativeId;
+        var alternative = isNew ? Model.Alternatives.Where((item) => item.Id == Model.Criteria[i].DBVoteAlternativeId).First() : null;
+        <h3> @(isNew ?  ("Альтернатива: " + @alternative?.Title) : "") </h3>
+        <div class="criteria-item border p-3 mb-3">
+            <input type="hidden" asp-for="Criteria[i].SettingsId" />
+            <input type="hidden" asp-for="Criteria[i].MinValue" />
+            <input type="hidden" asp-for="Criteria[i].MaxValue" />
+            <input type="hidden" asp-for="Criteria[i].DBVoteAlternativeId" />
+            <input type="hidden" asp-for="Criteria[i].Title" />
+            <input type="hidden" asp-for="Criteria[i].Description" />
+            <input type="hidden" asp-for="Criteria[i].ImportanceValue" />
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>@Model.Criteria[i].Title</h5>
+                    <div class="form-group">
+                        <label asp-for="Criteria[i].Value" class="control-label"></label>
+                        <input type="number" asp-for="Criteria[i].Value" class="form-control"
+                               min="@Model.Criteria[i].MinValue" max="@Model.Criteria[i].MaxValue" step="@Model.Criteria[i].StepValue" />
+                        <small class="form-text text-muted">
+                            Значення повинно міститьсь в діапазоні від @Model.Criteria[i].MinValue до @Model.Criteria[i].MaxValue. @Model.Criteria[i].Description
+                        </small>
+                        <span asp-validation-for="Criteria[i].Value" class="text-danger"></span>
                     </div>
-                    <span class="text-dark badge badge-info">Перетягніть заголовок для зміни порядку альтернатив</span>
-                </div>
-
-                <div class="alternative-criteria-container p-3">
-                    @for (int critIndex = 0; critIndex < group.Criteria.Count; critIndex++)
-                    {
-                        var criteria = group.Criteria[critIndex];
-                        var originalIndex = Model.Criteria.IndexOf(criteria);
-
-                        <div class="criteria-item border p-3 mb-3" data-criteria-index="@originalIndex" data-alternative-id="@group.AlternativeId">
-                            <input type="hidden" asp-for="Criteria[originalIndex].SettingsId" class="criteria-order" />
-                            <input type="hidden" asp-for="Criteria[originalIndex].MinValue" class="criteria-order" />
-                            <input type="hidden" asp-for="Criteria[originalIndex].MaxValue" class="criteria-order" />
-                            <input type="hidden" asp-for="Criteria[originalIndex].DBVoteAlternativeId" class="criteria-order" />
-                            <input type="hidden" asp-for="Criteria[originalIndex].Title" class="criteria-order" />
-                            <input type="hidden" asp-for="Criteria[originalIndex].Description" class="criteria-order" />
-                            <input type="hidden" asp-for="Criteria[originalIndex].ImportanceValue" class="criteria-order" />
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div class="d-flex align-items-center">
-                                            <span class="drag-handle">↕</span>
-                                            <h5 class="mb-0">@criteria.Title</h5>
-                                        </div>
-                                        <span class="badge badge-secondary">Перетягніть для зміни порядку критеріїв</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Criteria[originalIndex].Value" class="control-label"></label>
-                                        <input type="number" asp-for="Criteria[originalIndex].Value" class="form-control criteria-order"
-                                               min="@criteria.MinValue" max="@criteria.MaxValue" step="@criteria.StepValue" />
-                                        <small class="form-text text-muted">
-                                            Значення повинно міститьсь в діапазоні від @criteria.MinValue до @criteria.MaxValue. @criteria.Description
-                                        </small>
-                                        <span asp-validation-for="Criteria[originalIndex].Value" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
                 </div>
             </div>
-        }
-    </div>
-
+        </div>
+    }
     <div class="form-group">
         <input type="submit" value="Оцінити" class="btn btn-primary" />
         <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
     </div>
 </form>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const criteriaContainer = document.getElementById('criteriaContainer');
-        let draggedItem = null;
-        let isDraggingAlternative = false;
-
-        // Alternative drag and drop functionality - ONLY on header
-        document.querySelectorAll('.alternative-header').forEach(header => {
-            header.setAttribute('draggable', 'true');
-
-            header.addEventListener('dragstart', function(e) {
-                draggedItem = this.closest('.alternative-section');
-                isDraggingAlternative = true;
-                setTimeout(() => {
-                    draggedItem.classList.add('dragging');
-                    this.classList.add('dragging');
-                }, 0);
-                e.dataTransfer.effectAllowed = 'move';
-
-                // Set drag image to the entire alternative section for better visual feedback
-                e.dataTransfer.setDragImage(draggedItem, 20, 20);
-            });
-
-            header.addEventListener('dragend', function() {
-                if (draggedItem) {
-                    draggedItem.classList.remove('dragging');
-                }
-                this.classList.remove('dragging');
-                isDraggingAlternative = false;
-                updateFormIndices();
-            });
-
-            header.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                e.dataTransfer.dropEffect = 'move';
-            });
-
-            header.addEventListener('dragenter', function(e) {
-                e.preventDefault();
-            });
-        });
-
-        // Alternative section drop targets
-        document.querySelectorAll('.alternative-section').forEach(section => {
-            section.addEventListener('dragover', function(e) {
-                if (!isDraggingAlternative) return;
-                e.preventDefault();
-                e.dataTransfer.dropEffect = 'move';
-            });
-
-            section.addEventListener('dragenter', function(e) {
-                if (!isDraggingAlternative || this === draggedItem) return;
-                e.preventDefault();
-                this.classList.add('drag-over');
-            });
-
-            section.addEventListener('dragleave', function() {
-                this.classList.remove('drag-over');
-            });
-
-            section.addEventListener('drop', function(e) {
-                e.preventDefault();
-                this.classList.remove('drag-over');
-
-                if (this !== draggedItem && isDraggingAlternative) {
-                    const allAlternatives = Array.from(this.parentNode.querySelectorAll('.alternative-section'));
-                    const thisIndex = allAlternatives.indexOf(this);
-                    const draggedIndex = allAlternatives.indexOf(draggedItem);
-
-                    if (draggedIndex < thisIndex) {
-                        this.parentNode.insertBefore(draggedItem, this.nextSibling);
-                    } else {
-                        this.parentNode.insertBefore(draggedItem, this);
-                    }
-                }
-            });
-        });
-
-        // Criteria drag and drop functionality (within the same alternative)
-        document.querySelectorAll('.criteria-item').forEach(item => {
-            item.setAttribute('draggable', 'true');
-
-            item.addEventListener('dragstart', function(e) {
-                if (isDraggingAlternative) {
-                    e.preventDefault();
-                    return;
-                }
-
-                draggedItem = this;
-                setTimeout(() => {
-                    this.classList.add('dragging');
-                }, 0);
-                e.dataTransfer.effectAllowed = 'move';
-            });
-
-            item.addEventListener('dragend', function() {
-                this.classList.remove('dragging');
-                if (!isDraggingAlternative) {
-                    updateFormIndices();
-                }
-            });
-
-            item.addEventListener('dragover', function(e) {
-                if (isDraggingAlternative) return;
-                e.preventDefault();
-                e.dataTransfer.dropEffect = 'move';
-            });
-
-            item.addEventListener('dragenter', function(e) {
-                if (isDraggingAlternative) return;
-                e.preventDefault();
-                if (this !== draggedItem) {
-                    this.classList.add('drag-over');
-                }
-            });
-
-            item.addEventListener('dragleave', function() {
-                if (isDraggingAlternative) return;
-                this.classList.remove('drag-over');
-            });
-
-            item.addEventListener('drop', function(e) {
-                if (isDraggingAlternative) return;
-                e.preventDefault();
-                this.classList.remove('drag-over');
-
-                if (this !== draggedItem) {
-                    const alternativeId = this.getAttribute('data-alternative-id');
-                    const draggedAlternativeId = draggedItem.getAttribute('data-alternative-id');
-
-                    // Only allow reordering within the same alternative
-                    if (alternativeId === draggedAlternativeId) {
-                        const container = this.closest('.alternative-criteria-container');
-                        const allItems = Array.from(container.querySelectorAll('.criteria-item'));
-                        const thisIndex = allItems.indexOf(this);
-                        const draggedIndex = allItems.indexOf(draggedItem);
-
-                        if (draggedIndex < thisIndex) {
-                            container.insertBefore(draggedItem, this.nextSibling);
-                        } else {
-                            container.insertBefore(draggedItem, this);
-                        }
-                    }
-                }
-            });
-        });
-
-        function updateFormIndices() {
-            // Update alternative indices and reorder criteria in the model
-            const alternativeSections = document.querySelectorAll('.alternative-section');
-            const allCriteriaItems = document.querySelectorAll('.criteria-item');
-
-            // Create a flat list of criteria in the new order
-            const newCriteriaOrder = [];
-
-            alternativeSections.forEach((alternativeSection, altIndex) => {
-                const alternativeId = alternativeSection.getAttribute('data-alternative-id');
-                alternativeSection.setAttribute('data-alternative-index', altIndex);
-
-                // Get criteria items for this alternative in their current order
-                const criteriaItems = Array.from(alternativeSection.querySelectorAll('.criteria-item'));
-                criteriaItems.forEach(item => {
-                    newCriteriaOrder.push(item);
-                });
-            });
-
-            // Update all form inputs with new indices
-            newCriteriaOrder.forEach((criteriaItem, newIndex) => {
-                const originalIndex = criteriaItem.getAttribute('data-criteria-index');
-                criteriaItem.setAttribute('data-criteria-index', newIndex);
-
-                // Update all inputs within this criteria item
-                criteriaItem.querySelectorAll('input, select, textarea').forEach(input => {
-                    if (input.name && input.name.includes('Criteria[')) {
-                        input.name = input.name.replace(/Criteria\[\d+\]/, `Criteria[${newIndex}]`);
-                        input.id = input.id.replace(/Criteria_\d+__/, `Criteria_${newIndex}__`);
-                    }
-                });
-            });
-
-            console.log('Form indices updated');
-        }
-
-        // Prevent text selection while dragging for better UX
-        document.addEventListener('dragstart', function(e) {
-            if (e.target.closest('.alternative-header') || e.target.closest('.criteria-item')) {
-                e.dataTransfer.effectAllowed = 'move';
-            }
-        });
-    });
-</script>
