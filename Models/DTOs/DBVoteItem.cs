@@ -21,4 +21,5 @@ public class DBVoteItem
     public double Value { get; set; }
 
     public string UserId { get; set; }
+    public string AlternativePositions { get; set; }
 }

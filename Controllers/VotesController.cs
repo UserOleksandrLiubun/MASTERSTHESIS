@@ -316,7 +316,8 @@ public class VotesController : Controller
                     DBVoteItemSettingsId = criteria.SettingsId,
                     ImportanceValue = criteria.ImportanceValue,
                     Value = criteria.Value,
-                    UserId = userId
+                    UserId = userId,
+                    AlternativePositions = string.Join(", ", model.AlternativePositions.OrderBy(x => x.Key).Select(x => $"{x.Value}"))
                 };
                 _context.DBVoteItems.Add(voteItem);
             }
