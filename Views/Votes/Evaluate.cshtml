@@ -4,121 +4,233 @@
     int alternativeId = -1;
 }
 
-<h1>@ViewData["Title"]</h1>
-@if (!string.IsNullOrEmpty(Model.Description))
-{
-    <div class="vote-description mb-4">
-        <p class="lead">@Model.Description</p>
-    </div>
-}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+            <!-- Header -->
+            <div class="d-flex align-items-center mb-4">
+                <h1 class="h2 mb-0 text-primary">@ViewData["Title"]</h1>
+                <span class="badge bg-light text-dark border ms-3">@Model.Alternatives.Count() альтернатив</span>
+            </div>
 
-<form asp-action="Evaluate" id="evaluationForm">
-    <input type="hidden" asp-for="VoteId" />
-    <input type="hidden" asp-for="Description" />
-    <input type="hidden" asp-for="IsPrivate" />
-    <input type="hidden" asp-for="VoteTitle" />
-
-    <!-- Drag & Drop Block for Alternative Positioning -->
-    <div class="alternative-ordering mb-4">
-        <h4>Впорядкування альтернатив</h4>
-        <p class="text-muted">Перетягніть альтернативи для встановлення їх позиції у списку</p>
-
-        <div class="alternatives-list border p-3" id="alternativesContainer">
-            @foreach (var alternative in Model.Alternatives)
+            @if (!string.IsNullOrEmpty(Model.Description))
             {
-                <div class="alternative-item draggable border p-2 mb-2 bg-light"
-                     data-alternative-id="@alternative.Id"
-                     style="cursor: grab; user-select: none;">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="alternative-title">@alternative.Title</span>
-                        <span class="text-dark badge badge-secondary handle">≡</span>
+                <div class="card border-0 bg-light mb-4">
+                    <div class="card-body">
+                        <p class="lead mb-0 text-muted">@Model.Description</p>
                     </div>
-                    <input type="hidden" name="AlternativePositions[@alternative.Id]"
-                           class="order-input" value="@(Model.Alternatives.ToList().IndexOf(alternative) + 1)" />
                 </div>
             }
-        </div>
-        <small class="form-text text-muted">
-            Позиція 1 - найвищий пріоритет, @Model.Alternatives.Count() - найнижчий
-        </small>
-    </div>
 
-    @for (int i = 0; i < Model.Criteria.Count; i++)
-    {
-        var isNew = Model.Alternatives.Count() > 0 && alternativeId != Model.Criteria[i].DBVoteAlternativeId && Model.Criteria[i].DBVoteAlternativeId != null;
-        alternativeId = isNew ? Model.Criteria[i].DBVoteAlternativeId : alternativeId;
-        var alternative = isNew ? Model.Alternatives.Where((item) => item.Id == Model.Criteria[i].DBVoteAlternativeId).First() : null;
-        @if (isNew) {
-            <h4>Альтернатива: @alternative?.Title </h4>
-        }
-        <div class="criteria-item border p-3">
-            <input type="hidden" asp-for="Criteria[i].SettingsId" />
-            <input type="hidden" asp-for="Criteria[i].MinValue" />
-            <input type="hidden" asp-for="Criteria[i].MaxValue" />
-            <input type="hidden" asp-for="Criteria[i].DBVoteAlternativeId" />
-            <input type="hidden" asp-for="Criteria[i].Title" />
-            <input type="hidden" asp-for="Criteria[i].Description" />
-            <input type="hidden" asp-for="Criteria[i].ImportanceValue" />
-            <div class="row">
-                <div class="col-md-12">
-                    <h5>@Model.Criteria[i].Title</h5>
-                    <div class="form-group">
-                        <label asp-for="Criteria[i].Value" class="control-label"></label>
-                        <input type="number" asp-for="Criteria[i].Value" class="form-control criteria-value-input"
-                               min="@Model.Criteria[i].MinValue" max="@Model.Criteria[i].MaxValue" step="@Model.Criteria[i].StepValue"
-                               data-criteria-index="@i" />
-                        <small class="form-text text-muted">
-                            Значення повинно міститьсь в діапазоні від @Model.Criteria[i].MinValue до @Model.Criteria[i].MaxValue. @Model.Criteria[i].Description
-                        </small>
-                        <span asp-validation-for="Criteria[i].Value" class="text-danger"></span>
+            <form asp-action="Evaluate" id="evaluationForm" class="needs-validation" novalidate>
+                <input type="hidden" asp-for="VoteId" />
+                <input type="hidden" asp-for="Description" />
+                <input type="hidden" asp-for="IsPrivate" />
+                <input type="hidden" asp-for="VoteTitle" />
 
-                        <!-- Value buttons from min to max -->
-                        <div class="mt-2">
-                            @{
-                                var minValue = Model.Criteria[i].MinValue;
-                                var maxValue = Model.Criteria[i].MaxValue;
-                                var stepValue = Model.Criteria[i].StepValue;
-                                
-                                // If step is 0, calculate it as 10% of maxValue
-                                if (stepValue == 0)
-                                {
-                                    stepValue = maxValue * 0.1;
-                                }
-                                
-                                // Calculate buttons ensuring max value is always included
-                                var buttonCount = (int)Math.Floor((maxValue - minValue) / stepValue) + 1;
-                                
-                                for (int j = 0; j < buttonCount; j++)
-                                {
-                                    var value = minValue + (j * stepValue);
-                                    <button type="button" class="btn btn-outline-info btn-sm mr-1 mb-1 quick-value-btn"
-                                            data-index="@i" data-value="@value">
-                                        @value
-                                    </button>
-                                }
-                                
-                                // Always add max value if it wasn't included in the regular sequence
-                                var lastValue = minValue + ((buttonCount - 1) * stepValue);
-                                if (lastValue < maxValue)
-                                {
-                                    <button type="button" class="btn btn-outline-info btn-sm mr-1 mb-1 quick-value-btn"
-                                            data-index="@i" data-value="@maxValue">
-                                        @maxValue
-                                    </button>
-                                }
+                <!-- Drag & Drop Section -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-sort me-2"></i>
+                            <h5 class="mb-0">Впорядкування альтернатив</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Перетягніть альтернативи для встановлення їх пріоритету. Позиція 1 - найвищий пріоритет.
+                        </p>
+
+                        <div class="alternatives-list" id="alternativesContainer">
+                            @foreach (var alternative in Model.Alternatives)
+                            {
+                                <div class="alternative-item card draggable mb-2"
+                                     data-alternative-id="@alternative.Id">
+                                    <div class="card-body py-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-secondary me-3 handle">
+                                                    <i class="fas fa-bars"></i>
+                                                </span>
+                                                <span class="alternative-title fw-medium">@alternative.Title</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span class="position-badge badge bg-primary me-2">
+                                                    @(Model.Alternatives.ToList().IndexOf(alternative) + 1)
+                                                </span>
+                                                <i class="fas fa-grip-lines text-muted"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="AlternativePositions[@alternative.Id]"
+                                           class="order-input" value="@(Model.Alternatives.ToList().IndexOf(alternative) + 1)" />
+                                </div>
                             }
+                        </div>
+
+                        <div class="mt-3 p-3 bg-light rounded">
+                            <small class="text-muted">
+                                <i class="fas fa-lightbulb me-1"></i>
+                                Альтернативи розташовані за пріоритетом: <strong>1</strong> (найвищий) → <strong>@Model.Alternatives.Count()</strong> (найнижчий)
+                            </small>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- Criteria Section -->
+                <div class="criteria-section">
+                    @for (int i = 0; i < Model.Criteria.Count; i++)
+                    {
+                        var isNew = Model.Alternatives.Count() > 0 && alternativeId != Model.Criteria[i].DBVoteAlternativeId && Model.Criteria[i].DBVoteAlternativeId != null;
+                        alternativeId = isNew ? Model.Criteria[i].DBVoteAlternativeId : alternativeId;
+                        var alternative = isNew ? Model.Alternatives.Where((item) => item.Id == Model.Criteria[i].DBVoteAlternativeId).First() : null;
+
+                        @if (isNew)
+                        {
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-warning bg-opacity-10 p-3 rounded me-3">
+                                            <i class="fas fa-list-alt text-warning fa-lg"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="mb-1">Альтернатива: @alternative?.Title</h4>
+                                            <p class="text-muted mb-0">Оцініть критерії для цієї альтернативи</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="card criteria-item shadow-sm mb-3 border-start border-4 border-info">
+                            <div class="card-body">
+                                <input type="hidden" asp-for="Criteria[i].SettingsId" />
+                                <input type="hidden" asp-for="Criteria[i].MinValue" />
+                                <input type="hidden" asp-for="Criteria[i].MaxValue" />
+                                <input type="hidden" asp-for="Criteria[i].DBVoteAlternativeId" />
+                                <input type="hidden" asp-for="Criteria[i].Title" />
+                                <input type="hidden" asp-for="Criteria[i].Description" />
+                                <input type="hidden" asp-for="Criteria[i].ImportanceValue" />
+
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <h5 class="card-title text-primary mb-2">
+                                            <i class="fas fa-check-circle me-2 text-success"></i>
+                                            @Model.Criteria[i].Title
+                                        </h5>
+                                        @if (!string.IsNullOrEmpty(Model.Criteria[i].Description))
+                                        {
+                                            <p class="text-muted small mb-0">@Model.Criteria[i].Description</p>
+                                        }
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label asp-for="Criteria[i].Value" class="form-label fw-medium">
+                                                Оцінка: <span id="valueDisplay-@i" class="text-primary fw-bold">0</span>
+                                            </label>
+
+                                            <!-- Range Slider -->
+                                            <input type="range"
+                                                   asp-for="Criteria[i].Value"
+                                                   class="form-range criteria-range-input"
+                                                   min="@Model.Criteria[i].MinValue"
+                                                   max="@Model.Criteria[i].MaxValue"
+                                                   step="@(Model.Criteria[i].StepValue == 0 ? Model.Criteria[i].MaxValue * 0.1 : Model.Criteria[i].StepValue)"
+                                                   data-criteria-index="@i"
+                                                   id="range-@i" />
+
+                                            <!-- Number Input -->
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-sliders-h"></i>
+                                                </span>
+                                                <input type="number"
+                                                       asp-for="Criteria[i].Value"
+                                                       class="form-control criteria-value-input"
+                                                       min="@Model.Criteria[i].MinValue"
+                                                       max="@Model.Criteria[i].MaxValue"
+                                                       step="@(Model.Criteria[i].StepValue == 0 ? Model.Criteria[i].MaxValue * 0.1 : Model.Criteria[i].StepValue)"
+                                                       data-criteria-index="@i" />
+                                                <span class="input-group-text">
+                                                    Діапазон: @Model.Criteria[i].MinValue - @Model.Criteria[i].MaxValue
+                                                </span>
+                                            </div>
+
+                                            <!-- Quick Value Buttons -->
+                                            <div class="mt-3">
+                                                <label class="form-label small text-muted mb-2">Швидкий вибір:</label>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    @{
+                                                        var minValue = Model.Criteria[i].MinValue;
+                                                        var maxValue = Model.Criteria[i].MaxValue;
+                                                        var stepValue = Model.Criteria[i].StepValue;
+
+                                                        if (stepValue == 0)
+                                                        {
+                                                            stepValue = maxValue * 0.1;
+                                                        }
+
+                                                        var buttonCount = (int)Math.Floor((maxValue - minValue) / stepValue) + 1;
+
+                                                        for (int j = 0; j < buttonCount; j++)
+                                                        {
+                                                            var value = minValue + (j * stepValue);
+                                                            <button type="button"
+                                                                    class="btn btn-outline-primary btn-sm quick-value-btn @(j == 0 ? "active" : "")"
+                                                                    data-index="@i"
+                                                                    data-value="@value">
+                                                                @value
+                                                            </button>
+                                                        }
+
+                                                        var lastValue = minValue + ((buttonCount - 1) * stepValue);
+                                                        if (lastValue < maxValue)
+                                                        {
+                                                            <button type="button"
+                                                                    class="btn btn-outline-primary btn-sm quick-value-btn"
+                                                                    data-index="@i"
+                                                                    data-value="@maxValue">
+                                                                @maxValue
+                                                            </button>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+
+                                            <span asp-validation-for="Criteria[i].Value" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Submit Section -->
+                <div class="card mt-4 border-0 bg-light">
+                    <div class="card-body text-center py-4">
+                        <div class="row justify-content-center">
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-success btn-lg px-5 me-3">
+                                    <i class="fas fa-check me-2"></i>Завершити оцінювання
+                                </button>
+                                <a asp-action="Index" class="btn btn-outline-secondary btn-lg px-5">
+                                    <i class="fas fa-times me-2"></i>Скасувати
+                                </a>
+                            </div>
+                        </div>
+                        <p class="text-muted mt-3 mb-0">
+                            <i class="fas fa-shield-alt me-1"></i>
+                            Ваші оцінки будуть збережені конфіденційно
+                        </p>
+                    </div>
+                </div>
+            </form>
         </div>
-    }
-    <br/>
-    <div class="form-group">
-        <input type="submit" value="Оцінити" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
     </div>
-</form>
+</div>
 
 @section Scripts {
     <script>
@@ -126,7 +238,7 @@
             const container = document.getElementById('alternativesContainer');
             let draggedItem = null;
 
-            // Initialize drag and drop
+            // Initialize drag and drop with improved UX
             function initializeDragAndDrop() {
                 const items = container.querySelectorAll('.draggable');
 
@@ -136,13 +248,18 @@
                     item.addEventListener('dragstart', function(e) {
                         draggedItem = item;
                         setTimeout(() => {
-                            item.classList.add('dragging');
+                            item.classList.add('dragging', 'shadow');
+                            item.style.opacity = '0.5';
                         }, 0);
                     });
 
                     item.addEventListener('dragend', function() {
+                        item.classList.remove('dragging', 'shadow');
+                        item.style.opacity = '1';
+                        container.querySelectorAll('.drag-over').forEach(el => {
+                            el.classList.remove('drag-over');
+                        });
                         draggedItem = null;
-                        item.classList.remove('dragging');
                         updateOrder();
                     });
 
@@ -153,17 +270,17 @@
                     item.addEventListener('dragenter', function(e) {
                         e.preventDefault();
                         if (item !== draggedItem) {
-                            item.classList.add('drag-over');
+                            item.classList.add('drag-over', 'border-primary');
                         }
                     });
 
                     item.addEventListener('dragleave', function() {
-                        item.classList.remove('drag-over');
+                        item.classList.remove('drag-over', 'border-primary');
                     });
 
                     item.addEventListener('drop', function(e) {
                         e.preventDefault();
-                        item.classList.remove('drag-over');
+                        item.classList.remove('drag-over', 'border-primary');
 
                         if (item !== draggedItem) {
                             const allItems = Array.from(container.querySelectorAll('.draggable'));
@@ -182,34 +299,149 @@
                 });
             }
 
-            // Update the order of alternatives
+            // Update the order of alternatives with visual feedback
             function updateOrder() {
                 const items = container.querySelectorAll('.draggable');
 
                 items.forEach((item, index) => {
                     const position = index + 1;
-
-                    // Update hidden input for this alternative
                     const orderInput = item.querySelector('.order-input');
+                    const positionBadge = item.querySelector('.position-badge');
+
                     if (orderInput) {
                         orderInput.value = position;
+                    }
+                    if (positionBadge) {
+                        positionBadge.textContent = position;
+                        // Update badge color based on position
+                        positionBadge.className = 'badge me-2 ' +
+                            (position === 1 ? 'bg-success' :
+                             position <= 3 ? 'bg-primary' : 'bg-secondary');
                     }
                 });
             }
 
-            // Quick value buttons
-            document.querySelectorAll('.quick-value-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const index = this.getAttribute('data-index');
-                    const value = parseFloat(this.getAttribute('data-value'));
-                    const input = document.querySelector(`input[data-criteria-index="${index}"]`);
-                    input.value = value;
-                    input.dispatchEvent(new Event('change'));
-                });
-            });
+            // Enhanced value input handling
+            function initializeCriteriaInputs() {
+                // Sync range and number inputs
+                document.querySelectorAll('.criteria-range-input').forEach(rangeInput => {
+                    const index = rangeInput.getAttribute('data-criteria-index');
+                    const numberInput = document.querySelector(`input[data-criteria-index="${index}"]`);
+                    const valueDisplay = document.getElementById(`valueDisplay-${index}`);
 
-            // Initialize when page loads
+                    function updateDisplay() {
+                        const value = rangeInput.value;
+                        numberInput.value = value;
+                        if (valueDisplay) {
+                            valueDisplay.textContent = value;
+                        }
+                    }
+
+                    rangeInput.addEventListener('input', updateDisplay);
+                    numberInput.addEventListener('input', function() {
+                        rangeInput.value = this.value;
+                        updateDisplay();
+                    });
+
+                    // Initial display update
+                    updateDisplay();
+                });
+
+                // Quick value buttons with active state
+                document.querySelectorAll('.quick-value-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = this.getAttribute('data-index');
+                        const value = parseFloat(this.getAttribute('data-value'));
+
+                        // Update both inputs
+                        const rangeInput = document.getElementById(`range-${index}`);
+                        const numberInput = document.querySelector(`input[data-criteria-index="${index}"]`);
+
+                        rangeInput.value = value;
+                        numberInput.value = value;
+
+                        // Update display
+                        const valueDisplay = document.getElementById(`valueDisplay-${index}`);
+                        if (valueDisplay) {
+                            valueDisplay.textContent = value;
+                        }
+
+                        // Update active state of buttons
+                        const buttonGroup = this.closest('.d-flex');
+                        buttonGroup.querySelectorAll('.quick-value-btn').forEach(btn => {
+                            btn.classList.remove('active', 'btn-primary');
+                            btn.classList.add('btn-outline-primary');
+                        });
+                        this.classList.remove('btn-outline-primary');
+                        this.classList.add('active', 'btn-primary');
+                    });
+                });
+            }
+
+            // Form validation
+            const form = document.getElementById('evaluationForm');
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+
+            // Initialize everything
             initializeDragAndDrop();
+            initializeCriteriaInputs();
+
+            // Add some visual enhancements
+            container.style.minHeight = '200px';
         });
     </script>
+
+    <style>
+        .alternative-item {
+            transition: all 0.3s ease;
+            cursor: grab;
+        }
+
+            .alternative-item.dragging {
+                transform: rotate(5deg);
+                cursor: grabbing;
+            }
+
+            .alternative-item.drag-over {
+                border-color: #0d6efd !important;
+                background-color: #f8f9fa;
+            }
+
+        .handle {
+            cursor: grab;
+            user-select: none;
+        }
+
+        .alternative-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .criteria-range-input {
+            height: 6px;
+            margin: 1rem 0;
+        }
+
+            .criteria-range-input::-webkit-slider-thumb {
+                background: #0d6efd;
+            }
+
+            .criteria-range-input::-moz-range-thumb {
+                background: #0d6efd;
+            }
+
+        .quick-value-btn.active {
+            font-weight: 600;
+        }
+
+        .border-start {
+            border-left-width: 4px !important;
+        }
+    </style>
 }
