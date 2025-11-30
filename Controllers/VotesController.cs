@@ -39,7 +39,7 @@ public class VoteCriteriaViewModel
 
     [Range(1, 100)]
     [Display(Name = "Важливість")]
-    public double? Importance { get; set; } = 100;
+    public double? Importance { get; set; }
     [Display(Name = "Мінімальне значення")]
     public double MinValue { get; set; } = 0;
     [Display(Name = "Крок")]
