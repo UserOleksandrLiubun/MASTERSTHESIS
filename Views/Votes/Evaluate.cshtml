@@ -18,7 +18,7 @@
     <input type="hidden" asp-for="IsPrivate" />
     <input type="hidden" asp-for="VoteTitle" />
 
-    @if (Model.Criteria.Count() !> 0) 
+    @if (Model.Criteria.Count() == 0) 
     {
     <!-- Drag & Drop Block for Alternative Positioning -->
     <div class="alternative-ordering mb-3">
