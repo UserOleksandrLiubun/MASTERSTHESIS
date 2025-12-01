@@ -10,12 +10,11 @@ public class DBVoteItem
 
     public int? DBVoteAlternativeId { get; set; }
 
-    [Required(ErrorMessage = SharedResource.RequireMessage)]
-    public int DBVoteItemSettingsId { get; set; }
+    public int? DBVoteItemSettingsId { get; set; }
 
     [Display(Name = "Значення")]
-    public double Value { get; set; }
+    public double? Value { get; set; }
 
-    public string UserId { get; set; }
+    public string? UserId { get; set; }
     public int? AlternativePriority { get; set; }
 }

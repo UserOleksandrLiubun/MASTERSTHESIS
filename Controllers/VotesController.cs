@@ -303,20 +303,38 @@ public class VotesController : Controller
             {
                 _context.DBVoteItems.RemoveRange(existingVotes);
             }
-            foreach (var criteria in model.Criteria)
+            if (model.Criteria.Count() > 0)
             {
-                var voteItem = new DBVoteItem
+                foreach (var criteria in model.Criteria)
                 {
-                    DBVoteAlternativeId = criteria.DBVoteAlternativeId,
-                    DBVoteId = model.VoteId,
-                    DBVoteItemSettingsId = criteria.SettingsId,
-                    Value = criteria.Value,
-                    UserId = userId,
-                    AlternativePriority = model.AlternativePositions[criteria.DBVoteAlternativeId]
-                };
-                _context.DBVoteItems.Add(voteItem);
+                    var voteItem = new DBVoteItem
+                    {
+                        DBVoteAlternativeId = criteria.DBVoteAlternativeId,
+                        DBVoteId = model.VoteId,
+                        DBVoteItemSettingsId = criteria.SettingsId,
+                        Value = criteria.Value,
+                        UserId = userId,
+                        AlternativePriority = model.AlternativePositions[criteria.DBVoteAlternativeId]
+                    };
+                    _context.DBVoteItems.Add(voteItem);
+                }
             }
-
+            else
+            {
+                foreach (var criteria in model.Alternatives)
+                {
+                    var voteItem = new DBVoteItem
+                    {
+                        DBVoteAlternativeId = criteria.DBVoteId,
+                        DBVoteId = model.VoteId,
+                        DBVoteItemSettingsId = null,
+                        Value = null,
+                        UserId = userId,
+                        AlternativePriority = model.AlternativePositions[criteria.DBVoteId]
+                    };
+                    _context.DBVoteItems.Add(voteItem);
+                }
+            }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Results), new { id = model.VoteId });
         }

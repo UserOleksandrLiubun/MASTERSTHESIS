@@ -202,7 +202,7 @@
                                             double importance = criterionSettings.ImportanceValue.GetValueOrDefault(100);
                                             double normalizedImportance = importance / 100.0; // Convert to 0-1 scale
 
-                                            weightedSum += vote.Value * normalizedImportance;
+                                            weightedSum += vote.Value.GetValueOrDefault() * normalizedImportance;
                                             totalWeight += normalizedImportance;
                                         }
                                     }
@@ -256,8 +256,8 @@
                             <div class="col-md-6">
                                 <strong>Статистика:</strong>
                                 <ul class="list-unstyled">
-                                    <li>Середнє значення: <strong>@averageValue.ToString("F2")</strong></li>
-                                    <li>Діапазон значень: @minValue.ToString("F2") - @maxValue.ToString("F2")</li>
+                                    <li>Середнє значення: <strong>@averageValue.GetValueOrDefault().ToString("F2")</strong></li>
+                                    <li>Діапазон значень: @minValue.GetValueOrDefault().ToString("F2") - @maxValue.GetValueOrDefault().ToString("F2")</li>
                                     <li>Кількість голосів: @itemVotes.Count</li>
                                 </ul>
                             </div>
@@ -290,7 +290,7 @@
 
                                                 <tr>
                                                     <td>@alternative.Title</td>
-                                                    <td>@altAverage.ToString("F2")</td>
+                                                    <td>@altAverage.GetValueOrDefault().ToString("F2")</td>
                                                     <td>@altVotes.Count</td>
                                                 </tr>
                                             }
@@ -305,7 +305,7 @@
                                 <strong>Розподіл зачень:</strong>
                                 <div class="distribution-chart mt-2">
                                     @{
-                                        var valueGroups = itemVotes.GroupBy(v => Math.Round(v.Value, 1))
+                                        var valueGroups = itemVotes.GroupBy(v => Math.Round(v.Value.GetValueOrDefault(), 1))
                                         .OrderBy(g => g.Key)
                                         .Select(g => new { Value = g.Key, Count = g.Count() })
                                         .ToList();
@@ -448,7 +448,7 @@
                             <td>@(alternative?.Title ?? "Невідома альтернатива")</td>
                             <td>@(itemSetting?.Title ?? "Невідомий критерій")</td>
                             <td>
-                                <span class="badge bg-primary">@vote.Value.ToString("F1")</span>
+                                <span class="badge bg-primary">@vote.Value.GetValueOrDefault().ToString("F1")</span>
                             </td>
                             <td>
                                 @{
@@ -534,11 +534,11 @@
                                 <div class="d-flex align-items-center">
                                     <div class="progress flex-grow-1 me-2" style="height: 10px;">
                                         <div class="progress-bar bg-success" 
-                                             style="width: @Math.Ceiling((averageScore * 10))%"
-                                             title="@averageScore.ToString("F2")">
+                                             style="width: @Math.Ceiling((averageScore.GetValueOrDefault() * 10))%"
+                                             title="@averageScore.GetValueOrDefault().ToString("F2")">
                                         </div>
                                     </div>
-                                    <span>@averageScore.ToString("F2")</span>
+                                    <span>@averageScore.GetValueOrDefault().ToString("F2")</span>
                                 </div>
                             </td>
                             <td>@distinctUsers</td>
@@ -580,9 +580,9 @@
                                                         <tr>
                                                             <td>@itemSetting.Title</td>
                                                             <td>@criterionVotes.Count</td>
-                                                            <td>@criterionAvg.ToString("F2")</td>
-                                                            <td>@criterionMin.ToString("F1")</td>
-                                                            <td>@criterionMax.ToString("F1")</td>
+                                                            <td>@criterionAvg.GetValueOrDefault().ToString("F2")</td>
+                                                            <td>@criterionMin.GetValueOrDefault().ToString("F1")</td>
+                                                            <td>@criterionMax.GetValueOrDefault().ToString("F1")</td>
                                                         </tr>
                                                     }
                                                 </tbody>
