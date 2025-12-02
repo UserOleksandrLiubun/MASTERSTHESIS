@@ -60,11 +60,54 @@
 
     <div class="form-group">
         <label asp-for="UsersIDs" class="control-label"></label>
-        <select asp-for="UsersIDs" class="form-control" asp-items="Model.Contacts" multiple size="5">
-
-        </select>
+        <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto; background-color: white;">
+            @foreach (var contact in Model.Contacts)
+            {
+                <div class="form-check user-select-item" data-value="@contact.Value">
+                    <input class="form-check-input" type="checkbox" id="user_@contact.Value"
+                           name="UsersIDs" value="@contact.Value"
+                           @(contact.Selected ? "checked" : "") />
+                    <label class="form-check-label" for="user_@contact.Value">
+                        @contact.Text
+                    </label>
+                </div>
+            }
+        </div>
+        <input type="hidden" asp-for="UsersIDs" id="selectedUsersInput" />
         <span asp-validation-for="UsersIDs" class="text-danger"></span>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userItems = document.querySelectorAll('.user-select-item');
+            const hiddenInput = document.getElementById('selectedUsersInput');
+
+            function updateSelectedUsers() {
+                const checkboxes = document.querySelectorAll('input[name="UsersIDs"]:checked');
+                const selectedValues = Array.from(checkboxes).map(cb => cb.value);
+                hiddenInput.value = selectedValues.join(',');
+            }
+
+            userItems.forEach(item => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                const label = item.querySelector('label');
+
+                // Toggle on item click (anywhere in the div)
+                item.addEventListener('click', function(e) {
+                    if (e.target !== checkbox && e.target !== label) {
+                        checkbox.checked = !checkbox.checked;
+                        updateSelectedUsers();
+                    }
+                });
+
+                // Update on direct checkbox click
+                checkbox.addEventListener('change', updateSelectedUsers);
+            });
+
+            // Initialize hidden field value
+            updateSelectedUsers();
+        });
+    </script>
 
     <h4>Альтернативи</h4>
     <div id="alternatives-container">
