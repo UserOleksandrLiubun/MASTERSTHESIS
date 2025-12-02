@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="AccountController">
+    <Position X="3" Y="5.5" Width="6.75" />
+    <TypeIdentifier>
+      <HashCode>AQAABAAjIAAAAAIAAAFBEgIAJACBAIAAAgERAAAgAAA=</HashCode>
+      <FileName>Controllers\AccountController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ContactsController">
+    <Position X="11.75" Y="10.5" Width="4.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AIIABAAAAgAABAAAAAAAAABAAAEAAAAAAAEAIAAgAAA=</HashCode>
+      <FileName>Controllers\ContactsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeController">
+    <Position X="3" Y="0.5" Width="10.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAABQIAAAFBQAAAAAUAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TaskAccessController">
+    <Position X="8.5" Y="10.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAABAAAAAAAAAAAAAQAAAAAAAEAACgAAAA=</HashCode>
+      <FileName>Controllers\TaskAccessController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VotesController">
+    <Position X="3" Y="10.5" Width="5.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAABAAAAAAAAgAACAEAAEAAAAEAAABAAAA=</HashCode>
+      <FileName>Controllers\VotesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
