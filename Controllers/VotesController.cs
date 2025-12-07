@@ -312,23 +312,25 @@ public class VotesController : Controller
                 }
             }
 
-            dBVoteItemSettings.Add(new()
-            {
-                Id = vote.Id,
-                DBVoteId = vote.Id,
-                Title = "Приорітет",
-                Description = "",
-                ImportanceValue = null,
-                MinValue = 1,
-                StepValue = 1,
-                MaxValue = alternatives.Count
-            });
+            for (int i = 1; i <= alternatives.Count(); ++i) {
+                dBVoteItemSettings.Add(new()
+                {
+                    Id = i,
+                    DBVoteId = vote.Id,
+                    Title = $"Приорітет {i}",
+                    Description = "",
+                    ImportanceValue = null,
+                    MinValue = 1,
+                    StepValue = 1,
+                    MaxValue = alternatives.Count
+                });
+            }
 
             // Group votes by alternatives
             userVotes = votes.GroupBy(v => v.UserId);
             for (int i = 0; i < votes.Count(); ++i)
             {
-                votes[i].DBVoteItemSettingsId = vote.Id;
+                votes[i].DBVoteItemSettingsId = votes[i].AlternativePriority;
             }
         }
         var result = new VoteResultViewModel()
