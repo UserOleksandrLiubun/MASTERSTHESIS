@@ -4,7 +4,7 @@
     ViewData["Title"] = "Results: " + ViewBag.VoteTitle;
     var totalVotes = Model.DBVoteItem.Count();
     var uniqueUsers = Model.DBVoteItem.Select(v => v.UserId).Distinct().Count();
-    var listImportance = new List<(int, double)>();
+    var listImportance = new List<(int, double, string)>();
 }
 
 <h2>Результати: @Model.Title</h2>
