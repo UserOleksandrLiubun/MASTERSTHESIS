@@ -85,7 +85,7 @@
 
                                 // Calculate percentage for progress bar
                                 var percentageWidth = Math.Ceiling(maxScore > 0 ? (weightedAverageScore / maxScore) * 100 : 0);
-                                listImportance.Add((alternative.Id, percentageWidth));
+                                listImportance.Add((alternative.Id, percentageWidth, alternative.Title));
                                 <tr>
                                     <td>@alternative.Title</td>
                                     <td>
