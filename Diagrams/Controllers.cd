@@ -16,6 +16,9 @@
       <HashCode>AIIABAAAAgAABAAAAAAAAABAAAEAAAAAAAEAIAAgAAA=</HashCode>
       <FileName>Controllers\ContactsController.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="HomeController">
     <Position X="3" Y="0.5" Width="10.75" />
@@ -23,6 +26,9 @@
       <HashCode>AAAABAAAAAAABQIAAAFBQAAAAAUAAEACAAEAAAAAAAA=</HashCode>
       <FileName>Controllers\HomeController.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="TaskAccessController">
     <Position X="8.5" Y="10.5" Width="2.75" />
@@ -30,6 +36,10 @@
       <HashCode>AAAABAAAAAAABAAAAAAAAAAAAAQAAAAAAAEAACgAAAA=</HashCode>
       <FileName>Controllers\TaskAccessController.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+      <Field Name="_userManager" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="VotesController">
     <Position X="3" Y="10.5" Width="5.25" />
@@ -37,6 +47,20 @@
       <HashCode>AAAABAAAAAAABAAAAAAAAgAACAEAAEAAAAEAAABAAAA=</HashCode>
       <FileName>Controllers\VotesController.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ApplicationDbContext">
+    <Position X="10" Y="5.5" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>BCAAAAAAAAAAAAAAAAAAAAAAAAAAQIAAAAAIAAAAABA=</HashCode>
+      <FileName>ApplicationDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Identity.UserManager&lt;TUser&gt;">
+    <Position X="14" Y="8.5" Width="3.5" />
+    <TypeIdentifier />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

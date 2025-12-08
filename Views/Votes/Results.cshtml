@@ -4,6 +4,7 @@
     ViewData["Title"] = "Results: " + ViewBag.VoteTitle;
     var totalVotes = Model.DBVoteItem.Count();
     var uniqueUsers = Model.DBVoteItem.Select(v => v.UserId).Distinct().Count();
+    var listImportance = new List<(int, double)>();
 }
 
 <h2>Результати: @Model.Title</h2>
@@ -84,7 +85,7 @@
 
                                 // Calculate percentage for progress bar
                                 var percentageWidth = maxScore > 0 ? (weightedAverageScore / maxScore) * 100 : 0;
-
+                                listImportance.Add((alternative.Id, percentageWidth));
                                 <tr>
                                     <td>@alternative.Title</td>
                                     <td>

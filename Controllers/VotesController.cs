@@ -22,6 +22,7 @@ public class VotesController : Controller
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var votes = _context.DBVotes
             .Where(v => v.UserId == userId || v.UsersIDs.Contains(userId))
+            .OrderByDescending(v => v.StartDateTime)
             .ToList();
         return View(votes);
     }
