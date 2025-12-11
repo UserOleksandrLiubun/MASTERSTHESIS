@@ -210,9 +210,10 @@ public class AccountController : Controller
     public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl;
+        string email = GenerateRandomMixedCasePrefix() + "@email.com";
         if (ModelState.IsValid)
         {
-            var user = new DBApplicationUser { UserName = model.UserName, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+            var user = new DBApplicationUser { UserName = model.UserName, Email = email, FirstName = model.FirstName, LastName = model.LastName };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
@@ -220,7 +221,7 @@ public class AccountController : Controller
 
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 _logger.LogInformation("User created a new account with password.");
@@ -231,6 +232,21 @@ public class AccountController : Controller
 
         // If execution got this far, something failed, redisplay the form.
         return View(model);
+    }
+
+    public static string GenerateRandomMixedCasePrefix(int length = 8)
+    {
+        var random = new Random();
+        const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        var prefix = new char[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            prefix[i] = chars[random.Next(chars.Length)];
+        }
+
+        return new string(prefix);
     }
 
     [HttpPost]

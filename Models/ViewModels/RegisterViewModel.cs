@@ -7,10 +7,10 @@ public class RegisterViewModel
     [Display(Name = "Ім'я користувача")]
     public string UserName { get; set; }
 
-    [Required(ErrorMessage = SharedResource.RequireMessage)]
-    [EmailAddress(ErrorMessage = SharedResource.EmailAddressErrorMessage)]
-    [Display(Name = "Електронна пошта")]
-    public string Email { get; set; }
+    //[Required(ErrorMessage = SharedResource.RequireMessage)]
+    //[EmailAddress(ErrorMessage = SharedResource.EmailAddressErrorMessage)]
+    //[Display(Name = "Електронна пошта")]
+    //public string Email { get; set; }
 
     [Required(ErrorMessage = SharedResource.RequireMessage)]
     [StringLength(100, ErrorMessage = "{0} повинен містити щонайменше {2} символів і максимально {1} символів.", MinimumLength = 6)]
