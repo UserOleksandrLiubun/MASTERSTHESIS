@@ -8,13 +8,16 @@ public class VoteCriteriaViewModel
     [Display(Name = "Опис")]
     public string Description { get; set; }
 
-    [Range(1, 100)]
+    [Range(0, 100)]
     [Display(Name = "Важливість")]
     public double? Importance { get; set; }
+    [Range(0, double.MaxValue)]
     [Display(Name = "Мінімальне значення")]
     public double MinValue { get; set; } = 0;
+    [Range(0, double.MaxValue)]
     [Display(Name = "Крок")]
     public double StepValue { get; set; } = 0;
+    [Range(0, double.MaxValue)]
     [Display(Name = "Максимальне значення")]
     public double MaxValue { get; set; } = 10;
 }
