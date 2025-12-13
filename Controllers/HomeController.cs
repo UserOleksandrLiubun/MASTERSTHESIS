@@ -78,6 +78,9 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(TaskViewModel model, string returnUrl = null)
     {
+        if (model.Description == null) {
+            model.Description = "";
+        }
         var user = await _userManager.GetUserAsync(User);
         var task = _context.Tasks.First(item => (item.UserId == user.Id || item.UserIDsGrantedAccess.Contains(user.Id)) && item.Id == model.Id);
         model.UserId = task.UserId;
